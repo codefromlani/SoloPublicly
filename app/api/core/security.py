@@ -31,7 +31,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
             expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=[ALGORITHM])
+        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
     except Exception as e:
         raise HTTPException(
@@ -42,8 +42,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 def create_email_verification_token(email: str) -> str:
     try:
         expire = datetime.now(timezone.utc) + timedelta(minutes=EMAIL_TOKEN_EXPIRE_MINUTES)
-        to_encode = {"exp": expire, "sub": email, type:"email_verification"}
-        return jwt.encode(to_encode, SECRET_KEY, algorithm=[ALGORITHM])
+        to_encode = {"exp": expire, "sub": email, "type": "email_verification"}
+        return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -52,8 +52,8 @@ def create_email_verification_token(email: str) -> str:
     
 def verify_email_token(token: str, db: Session) -> User:
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        if payload.get("type") != "email_verfication":
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        if payload.get("type") != "email_verification":
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid token type"
@@ -93,14 +93,6 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
-def authenticate_user(db: Session, username: str, password: str):
-    user = db.query(User).filter(User.email == username).first()
-    if not user:
-        return None
-    if not verify_password(password, user.hashed_password):
-        return None
-    return user
-
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -127,12 +119,3 @@ def admin_only(current_user: User = Depends(get_current_user)):
             detail="Operation requires admin privileges"
         )
     return current_user
-
-def get_current_verified_user(current_user: User = Depends(get_current_user)) -> User:
-    if not current_user.is_verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Email not verified. Please verify your email to access this resource."
-        )
-    return current_user
-        
