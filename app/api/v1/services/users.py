@@ -15,13 +15,13 @@ def create_user(user: UserCreate, db: Session) -> UserOut:
     if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User with provided credentials already exists"
+            detail="email already exists"
         )
 
     if db.query(User).filter(User.username == user.username).first():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User with provided credentials already exists"
+            detail="username already exists"
         )
     
     hashed_password = hash_password(user.password)
