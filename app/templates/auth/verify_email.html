@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="auth-form">
+            <div class="verification-status">
+                <div class="spinner"></div>
+                <h2>Verifying your email...</h2>
+                <p>Please wait while we verify your email address.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/verify_email.js"></script>
+{% endblock %}
