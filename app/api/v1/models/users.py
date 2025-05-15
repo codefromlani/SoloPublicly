@@ -20,3 +20,4 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     projects = relationship("Project", back_populates="user")
+    weekly_goals = relationship("WeeklyGoal", back_populates="user", cascade="all, delete-orphan")
