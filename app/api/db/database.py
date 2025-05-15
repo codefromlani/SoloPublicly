@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)  # this ensures reload even if env vars are already set
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 print("DATABASE_URL:", DATABASE_URL)
