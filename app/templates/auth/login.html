@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SoloForge{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card" style="max-width: 500px; margin: 2rem auto;">
+        <h1 class="gradient-text" style="margin-bottom: 1.5rem; text-align: center;">Log In</h1>
+
+        {% if message %}
+        <div class="notice">
+            {{ message }}
+        </div>
+        {% endif %}
+
+         <div id="verificationSuccess" class="success-message" style="display: none;">
+                Your email has been verified successfully! Please log in to continue.
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div id="loginError" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn" style="width: 100%;">Login</button>
+            </div>
+        </form>
+
+        <div id="verificationNotice" class="verification-notice" style="display: none;">
+            <p>Your email is not verified.</p>
+            <p class="resend-link">
+                Didn't get the email? 
+                <a href="#" id="resendVerification">Resend Verification</a>
+            </p>
+        </div>
+
+        <div id="resendSuccess" class="success-message" style="display: none;">
+            Verification email sent! Please check your inbox.
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem;">
+            <p>Don't have an account? <a href="/register" style="color: var(--secondary-color);">Register</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/login.js"></script>
+{% endblock %}
