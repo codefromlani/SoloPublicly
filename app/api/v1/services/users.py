@@ -7,7 +7,7 @@ from pydantic import EmailStr
 
 from ..schemas.users import UserCreate, UserOut
 from ..models.users import User
-from ...core.security import hash_password, create_access_token, create_email_verification_token
+from ...core.security import hash_password, create_access_token, create_email_verification_token, verify_password
 from ...core.email import send_verification_email
 
 
@@ -54,6 +54,12 @@ def login_user(form_data: OAuth2PasswordRequestForm, db: Session) -> dict[str, A
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Please verify your email before logging in"
+        )
+    
+    if not verify_password(form_data.password, db_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password"
         )
     
     access_token = create_access_token(data={"sub": db_user.email}, expires_delta=timedelta(minutes=30))
