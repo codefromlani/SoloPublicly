@@ -5,7 +5,7 @@ from pydantic import EmailStr
 
 from ..models.users import User
 from ...db.database import get_db
-from ..schemas.users import UserOut, UserCreate, LoginResponse
+from ..schemas.users import UserOut, UserCreate, LoginResponse, EmailRequest
 from ..services.users import create_user, login_user, resend_verification
 from ...core.security import create_email_verification_token, verify_email_token, get_current_user
 from ...core.email import send_verification_email
@@ -42,5 +42,5 @@ def verify_email(token: str = Query(...), db: Session = Depends(get_db)):
 
 
 @router.post("/resend-verification")
-async def resend_verification_email(email: EmailStr, db: Session = Depends(get_db)):
-    return await resend_verification(email, db)
+async def resend_verification_email(payload: EmailRequest, db: Session = Depends(get_db)):
+    return await resend_verification(payload.email, db)
