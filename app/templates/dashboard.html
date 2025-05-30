@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SoloPublicly{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/projects.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 id="dashboardGreeting" class="gradient-text" style="margin-bottom: 1.5rem;">
+        Welcome
+    </h1>
+
+    <div class="card">
+        <h2 style="margin-bottom: 1rem;">Quick Actions</h2>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="/projects/create" class="btn">Create New Project</a>
+            <a href="/profile" class="btn btn-outline">Edit Profile</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-bottom: 1rem;">Recent Projects</h2>
+        <div id="recentProjects">
+            <p>You don't have any projects yet. <a href="/projects/create" style="color: var(--secondary-color);">Create your first project</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}
