@@ -22,15 +22,17 @@ conf = ConnectionConfig(
 
 async def send_verification_email(email: str, token: str):
     try:
-        verification_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:8000')}/api/v1/users/verify-email?token={token}"
+        # verification_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:8081')}/api/v1/users/verify-email?token={token}"
+        verification_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:8081')}/verify-email?token={token}"
+
 
         message = MessageSchema(
-            subject="Verify your email for SoloForge",
+            subject="Verify your email for SoloPublicly",
             recipients=[email],
             body=f"""
             <html>
                 <body>
-                    <h1>Welcome to SoloForge!</h1>
+                    <h1>Welcome to SoloPublicly!</h1>
                     <p>Please verify your email address by clicking the link below:</p>
                     <p>
                         <a href="{verification_url}">Verify Email</a>
